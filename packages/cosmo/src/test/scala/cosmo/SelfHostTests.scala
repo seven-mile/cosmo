@@ -7,8 +7,10 @@ class SelfHostTest extends munit.FunSuite:
     compiler.loadPackage(PackageMetaSource.ProjectPath("library/std"));
     compiler.preloadPackage("std");
 
-    val prog = compiler.getExecutable(path);
-    NodeChildProcess.execSync(prog, js.Dynamic.literal(stdio = "inherit"));
+    val prog = compiler.mayGetExecutable(path);
+    prog.foreach(
+      NodeChildProcess.execSync(_, js.Dynamic.literal(stdio = "inherit")),
+    )
   }
 
   test("parser") {

@@ -23,19 +23,22 @@ class Ast {
   var root = Ptr(Node)();
 
   def resolve(&mut self, j: &json::Value): Ptr(Node) = {
-    if (j.apply("kind") == "block") {
-      var stmts = j.apply("stmts") match {
-        case json::Value::Array(arr) => arr
-        // case _ => ???
-      };
-      var children = Vec(Ptr(Node))();
-      for (stmt in stmts) {
-        children.push(Ast.resolve(stmt));
-      }
-      self.arena.alloc(Node.Block(0, children))
-    } else {
-      ???
+    val kind = j.apply("kind").expectStr();
+    kind.as_str() match {
+      case "block" =>
+        println("I'm a block");
+        // var stmts = j.apply("stmts") match {
+        //   case json::Value::Array(arr) => arr
+        //   // case _ => ???
+        // };
+        // var children = Vec(Ptr(Node))();
+        // for (stmt in stmts) {
+        //   children.push(Ast.resolve(stmt));
+        // }
+        // self.arena.alloc(Node.Block(0, children))
+      case _ => ???
     }
+    Ptr(Node)()
   }
 
   def get(j: json::Value) = {
